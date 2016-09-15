@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 
 import java.util.Random;
@@ -15,21 +16,21 @@ import java.util.Random;
 /**
  * Created by Zacke on 2016-09-15.
  */
-public class DrawFire extends View {
+public class GameView extends SurfaceView implements Runnable {
 
-    Bitmap fire;
-    int x;
-    int y;
+    Bitmap fire = BitmapFactory.decodeResource(getResources(), R.drawable.flame64);
+    int x = 0;
+    int y = 0;
     int randMin = 0;
     int randMax = 4;
     int startX;
+    Rect ourRect = new Rect();
+    Paint blue = new Paint();
+    Paint p = new Paint();
+    Random r = new Random();
 
-    public DrawFire(Context context) {
+    public GameView(Context context) {
         super(context);
-        fire = BitmapFactory.decodeResource(getResources(), R.drawable.flame64);
-        x = 0;
-        y = 0;
-
     }
 
     @Override
@@ -37,10 +38,7 @@ public class DrawFire extends View {
 
         super.onDraw(canvas);
 
-        Rect ourRect = new Rect();
-        ourRect.set(0, 0, canvas.getWidth(), canvas.getHeight()/2);
-
-        Paint blue = new Paint();
+        ourRect.set(0, 0, canvas.getWidth(), canvas.getHeight());
         blue.setColor(getResources().getColor(R.color.colorPrimaryDark));
         blue.setStyle(Paint.Style.FILL);
 
@@ -56,22 +54,27 @@ public class DrawFire extends View {
         } else {
             y = 0;
         }
-        Random r = new Random();
 
         startX = r.nextInt(randMax - randMin + 1) + randMin;
-        Log.e("random", String.valueOf(startX));
-        Log.e("random", String.valueOf(canvas.getWidth()-fire.getWidth()));
         startX = Math.round((startX*(canvas.getWidth()-fire.getWidth())/randMax));
-        Log.e("hej", String.valueOf(startX));
-        canvas.drawBitmap(fire, startX, 0, new Paint());
+        canvas.drawBitmap(fire, startX, y, p);
         invalidate();
-
-
 
     }
 
 
+    @Override
+    public void run() {
+
+    }
 
 
+    public void pause() {
+
+    }
+
+    public void resume() {
+
+    }
 
 }

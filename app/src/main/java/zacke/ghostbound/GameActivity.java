@@ -1,26 +1,33 @@
 package zacke.ghostbound;
 
-import android.animation.ObjectAnimator;
-import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 public class GameActivity extends AppCompatActivity {
 
-
+    GameView game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_game);
-        setContentView(new DrawFire(this));
+        game = new GameView(this);
+        setContentView(game);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        game.pause();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        game.resume();
     }
 
     public void animate(View view) {
