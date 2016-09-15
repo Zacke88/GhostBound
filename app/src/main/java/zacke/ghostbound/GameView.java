@@ -22,17 +22,28 @@ public class GameView extends SurfaceView implements Runnable {
     Thread thread = null;
     SurfaceHolder holder;
     boolean gameRunning = false;
-
-    Bitmap fire = BitmapFactory.decodeResource(getResources(), R.drawable.flame64);
+    Bitmap fire = BitmapFactory.decodeResource(getResources(), R.drawable
+            .flame64);
     int x = 0;
     int y = 0;
-    int randMin = 0;
-    int randMax = 4;
-    int startX;
-    Rect ourRect = new Rect();
-    Paint blue = new Paint();
+    int fireX;
+
     Paint p = new Paint();
-    Random r = new Random();
+
+    boolean firstRun = true;
+
+
+
+
+    long timeMillis;
+    long waitTime;
+    long startTime;
+    //long totalTime = 0;
+    //long frameCount = 0;
+
+    int FPS = 30;
+    long targetTime = 1000/FPS;
+    double avgFPS;
 
     public GameView(Context context) {
         super(context);
@@ -40,42 +51,83 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void run() {
 
-        super.onDraw(canvas);
+        while(gameRunning) {
 
-        ourRect.set(0, 0, canvas.getWidth(), canvas.getHeight());
-        blue.setColor(getResources().getColor(R.color.colorPrimaryDark));
-        blue.setStyle(Paint.Style.FILL);
+            startTime = System.nanoTime();
 
-        canvas.drawRect(ourRect, blue);
+            //perform canvas drawing
+            if(!holder.getSurface().isValid()) {
+                continue;
+            }
 
-        if(x < canvas.getWidth()) {
-            x += 0;
-        } else {
-            x = 0;
+            Canvas c = holder.lockCanvas();
+
+            drawGame(c);
+
+            updateCoords(c);
+
+            holder.unlockCanvasAndPost(c);
+
+            adjustFPS();
         }
-        if(y < canvas.getHeight()) {
+
+    }
+
+    public void updateCoords(Canvas c) {
+        if(y < c.getHeight()) {
             y += 5;
         } else {
             y = 0;
         }
+    }
 
-        startX = r.nextInt(randMax - randMin + 1) + randMin;
-        startX = Math.round((startX*(canvas.getWidth()-fire.getWidth())/randMax));
-        canvas.drawBitmap(fire, startX, y, p);
-        invalidate();
+    public void adjustFPS() {
+
+        timeMillis = ((System.nanoTime() - startTime) / 1000000);
+        waitTime = (targetTime - timeMillis);
+        if(waitTime < 0) {
+            waitTime = 0;
+        }
+        try{
+            Thread.sleep(waitTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+
+            /* //TODO TO PRINT FPS
+            totalTime += System.nanoTime()-startTime;
+            frameCount++;
+            if(frameCount == FPS) {
+                avgFPS = 1000/((totalTime/frameCount)/1000000);
+                frameCount = 0;
+                totalTime = 0;
+                Log.e("FPS", String.valueOf(avgFPS));
+
+            }
+            */
 
     }
 
+    public int generateFirePosX(Canvas c) {
+        int randMin = 0;
+        int randMax = 4;
+        int value;
+        Random r = new Random();
+        value = r.nextInt(randMax - randMin + 1) + randMin;
+        return Math.round((value*(c.getWidth()-fire.getWidth())/randMax));
+    }
 
-    @Override
-    public void run() {
-
-        if(gameRunning) {
-
+    public void drawGame(Canvas c) {
+        if(firstRun) {
+            fireX = generateFirePosX(c);
+            firstRun = false;
         }
-
+        c.drawColor(getResources().getColor(R.color.colorPrimaryDark));
+        c.drawBitmap(fire, fireX, y, p);
     }
 
 

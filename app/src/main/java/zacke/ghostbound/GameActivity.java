@@ -1,21 +1,24 @@
 package zacke.ghostbound;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements View.OnTouchListener {
 
     GameView game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_game);
         game = new GameView(this);
+        game.setOnTouchListener(this);
         setContentView(game);
     }
 
@@ -50,5 +53,10 @@ public class GameActivity extends AppCompatActivity {
 
         fireball.startAnimation(animation);  // start animation
 
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
     }
 }
