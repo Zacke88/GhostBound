@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
@@ -17,6 +18,10 @@ import java.util.Random;
  * Created by Zacke on 2016-09-15.
  */
 public class GameView extends SurfaceView implements Runnable {
+
+    Thread thread = null;
+    SurfaceHolder holder;
+    boolean gameRunning = false;
 
     Bitmap fire = BitmapFactory.decodeResource(getResources(), R.drawable.flame64);
     int x = 0;
@@ -31,6 +36,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context) {
         super(context);
+        holder = getHolder();
     }
 
     @Override
@@ -66,15 +72,31 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
 
+        if(gameRunning) {
+
+        }
+
     }
 
 
     public void pause() {
+        gameRunning = false;
+        while(true) {
+            try {
+                thread.join();
+                break;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
+        }
+        thread = null;
     }
 
     public void resume() {
-
+        gameRunning = true;
+        thread = new Thread(this);
+        thread.start();
     }
 
 }
