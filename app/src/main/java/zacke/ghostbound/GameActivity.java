@@ -1,7 +1,5 @@
 package zacke.ghostbound;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +10,12 @@ import android.widget.ImageView;
 
 public class GameActivity extends AppCompatActivity implements View.OnTouchListener {
 
-    GameView game;
+    GamePanel game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        game = new GameView(this);
+        game = new GamePanel(this);
         game.setOnTouchListener(this);
         setContentView(game);
     }

@@ -12,26 +12,23 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * Created by Zacke on 2016-09-15.
  */
-public class GameView extends SurfaceView implements Runnable {
+public class GamePanel extends SurfaceView implements Runnable {
 
     Thread thread = null;
     SurfaceHolder holder;
     boolean gameRunning = false;
-    Bitmap fire = BitmapFactory.decodeResource(getResources(), R.drawable
-            .flame64);
-    int x = 0;
-    int y = 0;
+    boolean firstRun = true;
     int fireX;
 
-    Paint p = new Paint();
-
-    boolean firstRun = true;
-
+    private int runCount = 0;
+    int newFire = 200;
 
 
 
@@ -45,7 +42,11 @@ public class GameView extends SurfaceView implements Runnable {
     long targetTime = 1000/FPS;
     double avgFPS;
 
-    public GameView(Context context) {
+    private Player player;
+    private Fire fire;
+    private List<Fire> fires = new ArrayList<Fire>();
+
+    public GamePanel(Context context) {
         super(context);
         holder = getHolder();
     }
@@ -64,23 +65,23 @@ public class GameView extends SurfaceView implements Runnable {
 
             Canvas c = holder.lockCanvas();
 
-            drawGame(c);
+            if(firstRun) {
+                initiateGame(c);
+                firstRun = false;
+            }
+            if(runCount == newFire) {
+                createFire(c);
+                runCount = 0;
+            }
 
-            updateCoords(c);
+            update(c);
 
             holder.unlockCanvasAndPost(c);
 
             adjustFPS();
+            runCount++;
         }
 
-    }
-
-    public void updateCoords(Canvas c) {
-        if(y < c.getHeight()) {
-            y += 5;
-        } else {
-            y = 0;
-        }
     }
 
     public void adjustFPS() {
@@ -112,22 +113,40 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
-    public int generateFirePosX(Canvas c) {
-        int randMin = 0;
-        int randMax = 4;
-        int value;
-        Random r = new Random();
-        value = r.nextInt(randMax - randMin + 1) + randMin;
-        return Math.round((value*(c.getWidth()-fire.getWidth())/randMax));
+    public void createPlayer(Canvas c) {
+        Bitmap ghostImage = BitmapFactory.decodeResource(getResources(), R
+                .drawable.ghost32);
+        player = new Player(ghostImage, c.getWidth()/2, c.getHeight()/2);
+
     }
 
-    public void drawGame(Canvas c) {
-        if(firstRun) {
-            fireX = generateFirePosX(c);
-            firstRun = false;
-        }
+    public void createFire(Canvas c) {
+        Bitmap fireImage = BitmapFactory.decodeResource(getResources(), R
+                .drawable.flame64);
+        fires.add(new Fire(fireImage, player.getScore(), c.getWidth()));
+
+    }
+
+    public void initiateGame(Canvas c) {
+        drawBackground(c);
+        createPlayer(c);
+        createFire(c);
+    }
+
+    public void drawBackground(Canvas c) {
         c.drawColor(getResources().getColor(R.color.colorPrimaryDark));
-        c.drawBitmap(fire, fireX, y, p);
+    }
+
+    public void update(Canvas c) {
+        drawBackground(c);
+        player.update(c);
+        player.draw(c);
+
+        for (Fire fire : fires) {
+            fire.update(c);
+            fire.draw(c);
+        }
+
     }
 
 
