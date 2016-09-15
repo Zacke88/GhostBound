@@ -20,7 +20,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_game);
-        setContentView(new GamePanel(this));
+        setContentView(new DrawFire(this));
     }
 
     public void animate(View view) {
