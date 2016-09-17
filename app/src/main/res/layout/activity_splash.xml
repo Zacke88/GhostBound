@@ -29,7 +29,7 @@
         android:id="@+id/splashLogo"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ghosticon512"/>
+        android:src="@drawable/ghostlogo512"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyle"

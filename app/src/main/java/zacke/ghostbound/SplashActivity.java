@@ -44,6 +44,6 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, //TODO change to 5000
-                1000);
+                5000);
     }
 }

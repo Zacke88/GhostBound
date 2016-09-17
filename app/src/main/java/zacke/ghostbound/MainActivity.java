@@ -31,4 +31,27 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, GameActivity.class));
         finish();
     }
+
+    /**
+     * Class tied to the high score text and starts the high score activity when
+     * the
+     * player press this text field.
+     *
+     * @param view The view which was clicked to call this class.
+     */
+    public void highScore(View view) {
+        startActivity(new Intent(MainActivity.this, HighScoreActivity.class));
+        finish();
+    }
+
+    /**
+     * Class tied to the credits text and starts the credits activity when the
+     * player press this text field.
+     *
+     * @param view The view which was clicked to call this class.
+     */
+    public void credits(View view) {
+        startActivity(new Intent(MainActivity.this, CreditsActivity.class));
+        finish();
+    }
 }

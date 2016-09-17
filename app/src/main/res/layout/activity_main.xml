@@ -29,7 +29,7 @@
         android:id="@+id/newGame"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textSize="40sp"
+        android:textSize="30dp"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:onClick="newGame"/>
@@ -40,10 +40,25 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="High Score"
         android:id="@+id/highScore"
-        android:textSize="40sp"
+        android:textSize="30dp"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:layout_below="@+id/newGame"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="40dp"
+        android:onClick="highScore"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Credits"
+        android:id="@+id/credits"
+        android:textSize="30dp"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/highScore"
+        android:layout_centerHorizontal="true"
+        android:onClick="credits"/>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package zacke.ghostbound;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 public class GameActivity extends AppCompatActivity implements View.OnTouchListener {
 
     GamePanel game;
+    MediaPlayer gameMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,17 +20,20 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         game = new GamePanel(this);
         game.setOnTouchListener(this);
         setContentView(game);
+        gameMusic = MediaPlayer.create(GameActivity.this, R.raw.gamemusic);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         game.pause();
+        gameMusic.pause();
     }
     @Override
     protected void onResume() {
         super.onResume();
         game.resume();
+        gameMusic.start();
     }
 
     public void animate(View view) {
