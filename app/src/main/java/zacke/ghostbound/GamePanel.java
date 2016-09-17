@@ -32,6 +32,7 @@ public class GamePanel extends SurfaceView implements Runnable {
     private Random rand = new Random();
 
     private int runCount = 0;
+    private int gameFrame = 0;
     int newFire = 200;
 
 
@@ -51,6 +52,7 @@ public class GamePanel extends SurfaceView implements Runnable {
     private Floor floor;
     private List<Fire> fires = new ArrayList<Fire>();
     private List<Floor> floors = new ArrayList<Floor>();
+    private List<DecoyFloor> decoyFloors = new ArrayList<DecoyFloor>();
 
     public GamePanel(Context context) {
         super(context);
@@ -79,8 +81,17 @@ public class GamePanel extends SurfaceView implements Runnable {
                 createFire(c);
                 runCount = 0;
             }
+            if(gameFrame % 500 == 0) {
+                createDecoyFloor(c);
+            }
 
-            createFloor(c);
+            if(gameFrame % 500 == 0) {
+                createFloor(c);
+            }
+            if(gameFrame % 500 == 0) {
+                //TODO ADD THIS
+                // deleteFloor(c);
+            }
 
             update(c);
 
@@ -88,6 +99,7 @@ public class GamePanel extends SurfaceView implements Runnable {
 
             adjustFPS();
             runCount++;
+            gameFrame++;
         }
 
     }
@@ -135,15 +147,59 @@ public class GamePanel extends SurfaceView implements Runnable {
 
     }
 
-    public void createFloor(Canvas c) {
-        Bitmap fireImage = BitmapFactory.decodeResource(getResources(), R
+    public void createDecoyFloor(Canvas c) {
+        Bitmap squareImage = BitmapFactory.decodeResource(getResources(), R
                 .drawable.square64);
 
         for(int i = 0; i < 4; i++) {
-            floors.add(new Floor(fireImage, c.getWidth()));
+            decoyFloors.add(new DecoyFloor(squareImage, c.getWidth()));
+        }
+        generateDecoyFloorPattern();
+
+    }
+
+    public void createFloor(Canvas c) {
+        Bitmap squareImage = BitmapFactory.decodeResource(getResources(), R
+                .drawable.square64);
+
+        for(int i = 0; i < 4; i++) {
+            floors.add(new Floor(squareImage, c.getWidth()));
         }
         generateFloorPattern();
 
+    }
+
+    public void generateDecoyFloorPattern() {
+        value = rand.nextInt(randMax - randMin + 1) + randMin;
+        int i = 0;
+
+        if(value == 0) {
+            for (Floor floor : floors) {
+                int x = floor.getWidth()/2;
+                int y = floor.getHeight()/2;
+                floor.setX(x+floor.getWidth()*i);
+                floor.setY(y);
+                i++;
+            }
+        }
+        if(value == 1) {
+            for (Floor floor : floors) {
+                int x = floor.getWidth()/2;
+                int y = floor.getHeight()/2;
+                floor.setX(x+floor.getWidth()*i);
+                floor.setY(y);
+                i++;
+            }
+        }
+        if(value == 2) {
+            for (Floor floor : floors) {
+                int x = floor.getWidth()/2;
+                int y = floor.getHeight()/2;
+                floor.setX(x+floor.getWidth()*i);
+                floor.setY(y);
+                i++;
+            }
+        }
     }
 
     public void generateFloorPattern() {
