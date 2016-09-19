@@ -17,13 +17,12 @@ public class Fire extends GameObject {
     private int baseSpeed = 5;
     private int gameWidth;
     private Random rand = new Random();
-    private Bitmap image;
 
 
     public Fire(Bitmap image, int s, int gameWidth) {
         this.gameWidth = gameWidth;
         score = s;
-        this.image = image;
+        super.image = image;
 
         initiateFire();
 

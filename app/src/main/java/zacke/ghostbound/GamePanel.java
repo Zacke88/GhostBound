@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ public class GamePanel extends SurfaceView implements Runnable {
     SurfaceHolder holder;
     boolean gameRunning = false;
     boolean firstRun = true;
+    boolean floorActive = false;
+    boolean decoyFloorActive = false;
     int fireX;
     int value;
     int randMin = 0;
@@ -48,17 +52,19 @@ public class GamePanel extends SurfaceView implements Runnable {
     double avgFPS;
 
     private Player player;
-    private Fire fire;
-    private Floor floor;
-    private List<Fire> fires = new ArrayList<Fire>();
-    private List<Floor> floors = new ArrayList<Floor>();
-    private List<DecoyFloor> decoyFloors = new ArrayList<DecoyFloor>();
+    private List<Fire> fires = new ArrayList<>();
+    private List<Floor> floors = new ArrayList<>();
+
 
     public GamePanel(Context context) {
         super(context);
         holder = getHolder();
     }
 
+    /**
+     * The run method which is a loop that keeps running while the player is
+     * active and pauses while the application is not active.
+     */
     @Override
     public void run() {
 
@@ -81,19 +87,30 @@ public class GamePanel extends SurfaceView implements Runnable {
                 createFire(c);
                 runCount = 0;
             }
-            if(gameFrame % 500 == 0) {
-                createDecoyFloor(c);
+            if(gameFrame == 500) {
+                floorActive = false;
+                decoyFloorActive = true;
+                gameFrame = 0;
             }
 
-            if(gameFrame % 500 == 0) {
-                createFloor(c);
+            if(gameFrame == 100 && decoyFloorActive) {
+                decoyFloorActive = false;
+                floorActive = true;
+                gameFrame = 0;
             }
-            if(gameFrame % 500 == 0) {
+
+            if(gameFrame == 50 && floorActive) {
+                decoyFloorActive = false;
+                floorActive = false;
+                gameFrame = 0;
+            }
+
+            if(gameFrame % 100 == 0) {
                 //TODO ADD THIS
                 // deleteFloor(c);
             }
 
-            update(c);
+            update(c, floorActive, decoyFloorActive);
 
             holder.unlockCanvasAndPost(c);
 
@@ -135,7 +152,7 @@ public class GamePanel extends SurfaceView implements Runnable {
 
     public void createPlayer(Canvas c) {
         Bitmap ghostImage = BitmapFactory.decodeResource(getResources(), R
-                .drawable.ghosticon64);
+                .drawable.whiteghosticon64);
         player = new Player(ghostImage, c.getWidth()/2, c.getHeight()/2);
 
     }
@@ -147,91 +164,27 @@ public class GamePanel extends SurfaceView implements Runnable {
 
     }
 
-    public void createDecoyFloor(Canvas c) {
-        Bitmap squareImage = BitmapFactory.decodeResource(getResources(), R
-                .drawable.square64);
-
-        for(int i = 0; i < 4; i++) {
-            decoyFloors.add(new DecoyFloor(squareImage, c.getWidth()));
-        }
-        generateDecoyFloorPattern();
-
-    }
-
     public void createFloor(Canvas c) {
         Bitmap squareImage = BitmapFactory.decodeResource(getResources(), R
                 .drawable.square64);
+        floors.clear();
 
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 10; i++) {
             floors.add(new Floor(squareImage, c.getWidth()));
         }
-        generateFloorPattern();
+        generateFloorPattern(c);
 
     }
 
-    public void generateDecoyFloorPattern() {
-        value = rand.nextInt(randMax - randMin + 1) + randMin;
-        int i = 0;
-
-        if(value == 0) {
-            for (Floor floor : floors) {
-                int x = floor.getWidth()/2;
-                int y = floor.getHeight()/2;
-                floor.setX(x+floor.getWidth()*i);
-                floor.setY(y);
-                i++;
-            }
-        }
-        if(value == 1) {
-            for (Floor floor : floors) {
-                int x = floor.getWidth()/2;
-                int y = floor.getHeight()/2;
-                floor.setX(x+floor.getWidth()*i);
-                floor.setY(y);
-                i++;
-            }
-        }
-        if(value == 2) {
-            for (Floor floor : floors) {
-                int x = floor.getWidth()/2;
-                int y = floor.getHeight()/2;
-                floor.setX(x+floor.getWidth()*i);
-                floor.setY(y);
-                i++;
-            }
-        }
-    }
-
-    public void generateFloorPattern() {
-        value = rand.nextInt(randMax - randMin + 1) + randMin;
-        int i = 0;
-
-        if(value == 0) {
-            for (Floor floor : floors) {
-                int x = floor.getWidth()/2;
-                int y = floor.getHeight()/2;
-                floor.setX(x+floor.getWidth()*i);
-                floor.setY(y);
-                i++;
-            }
-        }
-        if(value == 1) {
-            for (Floor floor : floors) {
-                int x = floor.getWidth()/2;
-                int y = floor.getHeight()/2;
-                floor.setX(x+floor.getWidth()*i);
-                floor.setY(y);
-                i++;
-            }
-        }
-        if(value == 2) {
-            for (Floor floor : floors) {
-                int x = floor.getWidth()/2;
-                int y = floor.getHeight()/2;
-                floor.setX(x+floor.getWidth()*i);
-                floor.setY(y);
-                i++;
-            }
+    public void generateFloorPattern(Canvas c) {
+        for (Floor floor : floors) {
+            int xyMin = 0;
+            int xMax = c.getWidth()-floor.image.getWidth();
+            int yMax = c.getHeight()-floor.image.getHeight();
+            int x = rand.nextInt(xMax - xyMin + 1) + xyMin;
+            int y = rand.nextInt(yMax - xyMin + 1) + xyMin;
+            floor.setX(x);
+            floor.setY(y);
         }
     }
 
@@ -246,13 +199,22 @@ public class GamePanel extends SurfaceView implements Runnable {
         c.drawColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
-    public void update(Canvas c) {
+    public void update(Canvas c, boolean FloorActive, boolean
+            decoyFloorActive) {
         drawBackground(c);
         player.update(c);
         player.draw(c);
 
-        for (Floor floor : floors) {
-            floor.draw(c);
+        if(decoyFloorActive) {
+            for (Floor floor : floors) {
+                floor.drawDecoy(c);
+            }
+        }
+
+        if(FloorActive) {
+            for (Floor floor : floors) {
+                floor.draw(c);
+            }
         }
 
         for (Fire fire : fires) {

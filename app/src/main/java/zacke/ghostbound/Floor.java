@@ -2,6 +2,7 @@ package zacke.ghostbound;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 /**
  * Created by Zacke on 2016-09-17.
@@ -9,17 +10,19 @@ import android.graphics.Canvas;
 public class Floor extends GameObject {
 
     private int gameWidth;
-    private Bitmap image;
-
 
     public Floor(Bitmap image, int gameWidth) {
         this.gameWidth = gameWidth;
-        this.image = image;
-
+        super.image = image;
     }
 
     public void draw(Canvas canvas) {
-            canvas.drawBitmap(image, x, y, null);
+        canvas.drawBitmap(image, x, y, null);
+    }
 
+    public void drawDecoy(Canvas canvas) {
+        Paint alphaPaint = new Paint();
+        alphaPaint.setAlpha(35);
+        canvas.drawBitmap(image, x, y, alphaPaint);
     }
 }

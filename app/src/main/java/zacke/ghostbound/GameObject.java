@@ -1,5 +1,6 @@
 package zacke.ghostbound;
 
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 /**
@@ -12,6 +13,16 @@ public abstract class GameObject {
     protected int dx;
     protected int width;
     protected int height;
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    protected Bitmap image;
 
     public int getX() {
         return x;
