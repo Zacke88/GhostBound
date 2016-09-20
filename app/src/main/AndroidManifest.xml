@@ -33,6 +33,9 @@
             android:name=".HighScoreActivity"
             android:theme="@style/SplashTheme">
         </activity>
+        <activity android:name=".GameOverActivity"
+                  android:theme="@style/SplashTheme">
+        </activity>
     </application>
 
 </manifest>

@@ -35,11 +35,11 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         game.resume();
         gameMusic.start();
     }
-
+/*
     public void animate(View view) {
 
-        ImageView fireball = (ImageView) findViewById(R.id.flame1);
-        ImageView ghost = (ImageView) findViewById(R.id.animateGhost);
+        ImageView fireball = (ImageView) findViewById(R.id.fire64);
+        ImageView ghost = (ImageView) findViewById(R.id.ghost64);
 
         Log.e("hej", String.valueOf(fireball.getBottom()));
 
@@ -57,6 +57,7 @@ public class GameActivity extends AppCompatActivity implements View.OnTouchListe
         fireball.startAnimation(animation);  // start animation
 
     }
+    */
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {

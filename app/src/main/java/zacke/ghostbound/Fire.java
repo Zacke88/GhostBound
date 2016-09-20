@@ -11,18 +11,17 @@ import java.util.Random;
  */
 public class Fire extends GameObject {
 
-    private int score;
     private int speed;
-    private int speedCap = 30;
-    private int baseSpeed = 5;
     private int gameWidth;
-    private Random rand = new Random();
+    private Random r = new Random();
 
 
-    public Fire(Bitmap image, int s, int gameWidth) {
+
+    public Fire(Bitmap image, int gameWidth, Canvas c) {
         this.gameWidth = gameWidth;
-        score = s;
-        super.image = image;
+        imageSize = c.getWidth()/10;
+        super.image = Bitmap.createScaledBitmap(
+                image, imageSize, imageSize, false);
 
         initiateFire();
 
@@ -37,18 +36,14 @@ public class Fire extends GameObject {
 
     public int generateFirePosX(Bitmap image, int gameWidth) {
         int randMin = 0;
-        int randMax = 4;
-        int value;
-        Random r = new Random();
-        value = r.nextInt(randMax - randMin + 1) + randMin;
-        return Math.round((value*(gameWidth-image.getWidth())/randMax));
+        int randMax = (gameWidth-image.getWidth());
+        return r.nextInt(randMax - randMin + 1) + randMin;
     }
 
     public int generateSpeed() {
-        int speed = (baseSpeed + (int) (rand.nextDouble()*score/100));
-        if(speed >= speedCap) {
-            speed = speedCap;
-        }
+        int baseSpeed = 4;
+        int maxSpeed = 16;
+        int speed = r.nextInt(maxSpeed - baseSpeed + 1) + baseSpeed;
         return speed;
     }
 
@@ -63,8 +58,4 @@ public class Fire extends GameObject {
         canvas.drawBitmap(image, x, y, null);
     }
 
-    @Override
-    public int getWidth() {
-        return width-10;
-    }
 }

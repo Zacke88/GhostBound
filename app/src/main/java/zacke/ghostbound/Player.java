@@ -8,31 +8,22 @@ import android.view.animation.Animation;
  * Created by Zacke on 2016-09-15.
  */
 public class Player extends GameObject {
-    private Bitmap image;
     private int score;
-    private double dya;
-    private double dxa;
     private boolean playing;
-    private long startTime;
+    private boolean isAlive = true;
+    private int speed;
 
-    public Player(Bitmap image, int w, int h) {
-        x = 500;
-        y = 500;
-        dy = dx = 0;
-        height = h;
-        width = w;
-        this.image = image;
-
-        startTime = System.nanoTime();
+    public Player(Bitmap image, Canvas c) {
+        imageSize = c.getWidth()/10;
+        x = ((c.getWidth()-imageSize)/2);
+        y = ((c.getHeight()-imageSize)/2) ;
+        score = 0;
+        super.image = Bitmap.createScaledBitmap(
+                image, imageSize, imageSize, false);
     }
 
     public void update(Canvas c) {
-        long elapsedTime = (System.nanoTime()-startTime)/1000000;
-        if(elapsedTime>100)
-        {
-            score++;
-            startTime = System.nanoTime();
-        }
+
     }
     public void draw(Canvas canvas) {
         canvas.drawBitmap(image, x, y, null);
@@ -40,10 +31,21 @@ public class Player extends GameObject {
     public int getScore() {
         return score;
     }
+    public void setScore(int score) {
+        this.score = score;
+    }
     public boolean getPlaying() {
         return playing;
     }
     public void setPlaying(boolean b) {
         playing = b;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean Alive) {
+        isAlive = Alive;
     }
 }

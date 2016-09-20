@@ -11,9 +11,11 @@ public class Floor extends GameObject {
 
     private int gameWidth;
 
-    public Floor(Bitmap image, int gameWidth) {
+    public Floor(Bitmap image, int gameWidth, Canvas c) {
         this.gameWidth = gameWidth;
-        super.image = image;
+        imageSize = c.getWidth()/10;
+        super.image = Bitmap.createScaledBitmap(
+                image, imageSize, imageSize, false);
     }
 
     public void draw(Canvas canvas) {

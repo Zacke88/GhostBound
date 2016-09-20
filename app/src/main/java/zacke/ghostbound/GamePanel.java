@@ -1,6 +1,8 @@
 package zacke.ghostbound;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,6 +15,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +27,8 @@ import java.util.Random;
  */
 public class GamePanel extends SurfaceView implements Runnable {
 
-    Thread thread = null;
-    SurfaceHolder holder;
+    private Thread thread = null;
+    private SurfaceHolder holder;
     boolean gameRunning = false;
     boolean firstRun = true;
     boolean floorActive = false;
@@ -34,10 +38,12 @@ public class GamePanel extends SurfaceView implements Runnable {
     int randMin = 0;
     int randMax = 2;
     private Random rand = new Random();
+    //private TextView scoreText = new TextView();
 
-    private int runCount = 0;
     private int gameFrame = 0;
-    int newFire = 200;
+    private int numOfFloors = 1;
+    private int maxNumOfFires = 20;
+    private int maxNumOfFloors = 10;
 
 
 
@@ -62,8 +68,8 @@ public class GamePanel extends SurfaceView implements Runnable {
     }
 
     /**
-     * The run method which is a loop that keeps running while the player is
-     * active and pauses while the application is not active.
+     * The run method which is the game loop that keeps running while the
+     * player is active. Also handles the canvas to draw objects onto it
      */
     @Override
     public void run() {
@@ -72,55 +78,63 @@ public class GamePanel extends SurfaceView implements Runnable {
 
             startTime = System.nanoTime();
 
-            //perform canvas drawing
+            //Checks if the surface is valid else it will restart the loop
             if(!holder.getSurface().isValid()) {
                 continue;
             }
-
+            //Locks the canvas to allow canvas drawing
             Canvas c = holder.lockCanvas();
 
             if(firstRun) {
                 initiateGame(c);
                 firstRun = false;
             }
-            if(runCount == newFire) {
-                createFire(c);
-                runCount = 0;
-            }
+            //Spawns decoy floors after after 500 frames
             if(gameFrame == 500) {
                 floorActive = false;
                 decoyFloorActive = true;
                 gameFrame = 0;
             }
 
+            // Spawns floors over the decoy floors that was placed 100 frames
+            // ago
             if(gameFrame == 100 && decoyFloorActive) {
                 decoyFloorActive = false;
                 floorActive = true;
                 gameFrame = 0;
             }
 
+            // Removes all floors and creates a new floor pattern 50 frames
+            // after the floors activated. Also creates another fire.
             if(gameFrame == 50 && floorActive) {
                 decoyFloorActive = false;
                 floorActive = false;
                 gameFrame = 0;
+                if(numOfFloors < maxNumOfFloors) {
+                    numOfFloors++;
+                }
+                createFire(c);
+                createFloor(c);
             }
 
-            if(gameFrame % 100 == 0) {
-                //TODO ADD THIS
-                // deleteFloor(c);
-            }
-
+            //Updates the game panel
             update(c, floorActive, decoyFloorActive);
+            drawScore(c);
+
+            //scoreText = player.getScore();
 
             holder.unlockCanvasAndPost(c);
-
             adjustFPS();
-            runCount++;
             gameFrame++;
+            player.setScore(player.getScore()+1);
         }
 
     }
 
+    /**
+     * Sleeps the game thread for a certain amount of time to make it adjust
+     * to the set game FPS
+     */
     public void adjustFPS() {
 
         timeMillis = ((System.nanoTime() - startTime) / 1000000);
@@ -150,32 +164,54 @@ public class GamePanel extends SurfaceView implements Runnable {
 
     }
 
+    /**
+     * Creates a new Player for the game
+     *
+     * @param c The canvas which is drawn into
+     */
     public void createPlayer(Canvas c) {
         Bitmap ghostImage = BitmapFactory.decodeResource(getResources(), R
                 .drawable.ghost64);
-        player = new Player(ghostImage, c.getWidth()/2, c.getHeight()/2);
+        player = new Player(ghostImage, c);
 
     }
 
+    /**
+     * Creates a new Fire for the game
+     *
+     * @param c The canvas which is drawn into
+     */
     public void createFire(Canvas c) {
-        Bitmap fireImage = BitmapFactory.decodeResource(getResources(), R
-                .drawable.fire64);
-        fires.add(new Fire(fireImage, player.getScore(), c.getWidth()));
+        if(fires.size() < maxNumOfFires) {
+            Bitmap fireImage = BitmapFactory.decodeResource(getResources(), R
+                    .drawable.fire64);
+            fires.add(new Fire(fireImage, c.getWidth(), c));
+        }
 
     }
 
+    /**
+     * Creates a new Floor for the game
+     *
+     * @param c The canvas which is drawn into
+     */
     public void createFloor(Canvas c) {
         Bitmap squareImage = BitmapFactory.decodeResource(getResources(), R
                 .drawable.square64);
         floors.clear();
 
-        for(int i = 0; i < 10; i++) {
-            floors.add(new Floor(squareImage, c.getWidth()));
+        for(int i = 0; i < numOfFloors; i++) {
+            floors.add(new Floor(squareImage, c.getWidth(), c));
         }
         generateFloorPattern(c);
 
     }
 
+    /**
+     * Generates random positions for each floor to be drawn to
+     *
+     * @param c The canvas which is drawn into
+     */
     public void generateFloorPattern(Canvas c) {
         for (Floor floor : floors) {
             int xyMin = 0;
@@ -188,6 +224,12 @@ public class GamePanel extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Initiates the game which creates the background, player, a fire and a
+     * floor to start with
+     *
+     * @param c The canvas which is drawn into
+     */
     public void initiateGame(Canvas c) {
         drawBackground(c);
         createPlayer(c);
@@ -199,7 +241,33 @@ public class GamePanel extends SurfaceView implements Runnable {
         c.drawColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
-    public void update(Canvas c, boolean FloorActive, boolean
+    /**
+     * Creates a new layout which holds a text view for the player score
+     * which is drawn onto the canvas
+     *
+     * @param c Canvas to draw into
+     */
+    public void drawScore(Canvas c) {
+        LinearLayout layout = new LinearLayout(this.getContext());
+        TextView scoreText = new TextView(this.getContext());
+        scoreText.setVisibility(View.VISIBLE);
+        scoreText.setText("Score: "+ player.getScore());
+        scoreText.setTextColor(getResources().getColor(R.color.colorWhite));
+        scoreText.setTextSize(30);
+        layout.addView(scoreText);
+        layout.measure(c.getWidth(), c.getHeight());
+        layout.layout(0, 0, c.getWidth(), c.getHeight());
+        layout.draw(c);
+    }
+
+    /**
+     * Updates the game panel and draws it
+     *
+     * @param c The canvas which is drawn into
+     * @param floorActive if floors are active or not
+     * @param decoyFloorActive if decoy floors are active or not
+     */
+    public void update(Canvas c, boolean floorActive, boolean
             decoyFloorActive) {
         drawBackground(c);
         player.update(c);
@@ -211,19 +279,59 @@ public class GamePanel extends SurfaceView implements Runnable {
             }
         }
 
-        if(FloorActive) {
+        if(floorActive) {
             for (Floor floor : floors) {
                 floor.draw(c);
+                if(checkCollision(floor, player)) {
+                    endGame();
+                }
             }
         }
 
         for (Fire fire : fires) {
             fire.update(c);
             fire.draw(c);
+            if(checkCollision(fire, player)) {
+                endGame();
+            }
+        }
+
+    }
+
+    /**
+     * Checks two gameobjects to see if they intersects
+     *
+     * @param object an object
+     * @param player the player object
+     * @return true if objects intersect else false
+     */
+    public boolean checkCollision(GameObject object, GameObject player) {
+        if (Rect.intersects(object.getRectangle(), player.getRectangle())) {
+            return true;
+        } else {
+            return false;
         }
     }
 
+    /**
+     * Stops the game thread and starts the game over activity
+     */
+    public void endGame() {
+        Intent intent = new Intent(getContext(), GameOverActivity.class);
+        intent.putExtra("Score", player.getScore());
+        ((GameActivity)getContext()).startActivity(intent);
+        /*
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        */
+    }
 
+    /**
+     * Pauses the game which stops the game loop from running
+     */
     public void pause() {
         gameRunning = false;
         while(true) {
@@ -238,6 +346,9 @@ public class GamePanel extends SurfaceView implements Runnable {
         thread = null;
     }
 
+    /**
+     * Resumes the game which resumes the game loop which was paused
+     */
     public void resume() {
         gameRunning = true;
         thread = new Thread(this);
