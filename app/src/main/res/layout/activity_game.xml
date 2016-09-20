@@ -11,55 +11,6 @@
     tools:context="zacke.ghostbound.GameActivity"
     android:background="@color/colorPrimaryDarker">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/animateGhost"
-        android:src="@drawable/ghosticon64"
-        android:tint="#ffffff"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/flame1"
-        android:src="@drawable/flame64"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/flame2"
-        android:src="@drawable/flame64"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/flame3"
-        android:src="@drawable/flame64"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/flame2"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/flame4"
-        android:src="@drawable/flame64"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/flame1"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/flame5"
-        android:src="@drawable/flame64"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

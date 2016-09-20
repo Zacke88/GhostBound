@@ -152,14 +152,14 @@ public class GamePanel extends SurfaceView implements Runnable {
 
     public void createPlayer(Canvas c) {
         Bitmap ghostImage = BitmapFactory.decodeResource(getResources(), R
-                .drawable.whiteghosticon64);
+                .drawable.ghost64);
         player = new Player(ghostImage, c.getWidth()/2, c.getHeight()/2);
 
     }
 
     public void createFire(Canvas c) {
         Bitmap fireImage = BitmapFactory.decodeResource(getResources(), R
-                .drawable.flame64);
+                .drawable.fire64);
         fires.add(new Fire(fireImage, player.getScore(), c.getWidth()));
 
     }
