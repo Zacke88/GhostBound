@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+/**
+ * This class is created when the game shows the current highscore list.
+ */
 public class HighScoreActivity extends AppCompatActivity {
 
     @Override

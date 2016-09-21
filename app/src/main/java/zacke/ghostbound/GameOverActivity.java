@@ -3,9 +3,14 @@ package zacke.ghostbound;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * Activity which is run after a new game has ended. It shows the player
+ * score and also saves the score in a database if the player wants to.
+ */
 public class GameOverActivity extends AppCompatActivity {
 
     String score = "0";
@@ -17,8 +22,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            score = extras.getString("Score");
-            //The key argument here must match that used in the other activity
+            score = extras.getString("score");
         }
         TextView scoreView = (TextView) findViewById(R.id.scoreInteger);
         scoreView.setText(score);

@@ -4,6 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 /**
+ * Abstract class for any game object. It is used to store data succh as x
+ * and y position for the object, also holds the bitmap image and the size of
+ * the image.
+ *
  * Created by Zacke on 2016-09-15.
  */
 public abstract class GameObject {
@@ -20,16 +24,8 @@ public abstract class GameObject {
         this.image = image;
     }
 
-    public int getX() {
-        return x;
-    }
-
     public void setX(int x) {
         this.x = x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public void setY(int y) {
@@ -38,13 +34,5 @@ public abstract class GameObject {
 
     public Rect getRectangle() {
         return new Rect(x, y, x+imageSize, y+imageSize);
-    }
-
-    public int getImageSize() {
-        return imageSize;
-    }
-
-    public void setImageSize(int imageSize) {
-        this.imageSize = imageSize;
     }
 }

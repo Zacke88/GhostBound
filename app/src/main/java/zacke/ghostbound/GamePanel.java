@@ -1,20 +1,14 @@
 package zacke.ghostbound;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,44 +17,42 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Class which represents the game and acts as the game view. It has a thread
+ * that keeps running while the application is active or until the player
+ * looses.
+ *
+ *
+ *
  * Created by Zacke on 2016-09-15.
  */
 public class GamePanel extends SurfaceView implements Runnable {
 
     private Thread thread = null;
     private SurfaceHolder holder;
+    private Random rand = new Random();
+
     boolean gameRunning = false;
     boolean firstRun = true;
     boolean floorActive = false;
     boolean decoyFloorActive = false;
-    int fireX;
-    int value;
-    int randMin = 0;
-    int randMax = 2;
-    private Random rand = new Random();
-    //private TextView scoreText = new TextView();
 
     private int gameFrame = 0;
-    private int numOfFloors = 1;
-    private int maxNumOfFires = 20;
+    private int startNumOfFloors = 1;
     private int maxNumOfFloors = 10;
+    private int maxNumOfFires = 20;
 
-
-
+    int FPS = 30;
     long timeMillis;
     long waitTime;
     long startTime;
-    //long totalTime = 0;
-    //long frameCount = 0;
-
-    int FPS = 30;
     long targetTime = 1000/FPS;
-    double avgFPS;
+    /* Use to print avarage FPS
+    long totalTime = 0;
+    long frameCount = 0; */
 
     private Player player;
     private List<Fire> fires = new ArrayList<>();
     private List<Floor> floors = new ArrayList<>();
-
 
     public GamePanel(Context context) {
         super(context);
@@ -89,12 +81,6 @@ public class GamePanel extends SurfaceView implements Runnable {
                 initiateGame(c);
                 firstRun = false;
             }
-            //Spawns decoy floors after after 500 frames
-            if(gameFrame == 500) {
-                floorActive = false;
-                decoyFloorActive = true;
-                gameFrame = 0;
-            }
 
             // Spawns floors over the decoy floors that was placed 100 frames
             // ago
@@ -110,18 +96,21 @@ public class GamePanel extends SurfaceView implements Runnable {
                 decoyFloorActive = false;
                 floorActive = false;
                 gameFrame = 0;
-                if(numOfFloors < maxNumOfFloors) {
-                    numOfFloors++;
+                if(startNumOfFloors < maxNumOfFloors) {
+                    startNumOfFloors++;
                 }
                 createFire(c);
                 createFloor(c);
             }
+            //Spawns decoy floors after after 500 frames
+            if(gameFrame == 100) {
+                floorActive = false;
+                decoyFloorActive = true;
+                gameFrame = 0;
+            }
 
             //Updates the game panel
             update(c, floorActive, decoyFloorActive);
-            drawScore(c);
-
-            //scoreText = player.getScore();
 
             holder.unlockCanvasAndPost(c);
             adjustFPS();
@@ -148,9 +137,7 @@ public class GamePanel extends SurfaceView implements Runnable {
             e.printStackTrace();
         }
 
-
-
-            /* //TODO TO PRINT FPS
+        /*  Use to print avarage FPS
             totalTime += System.nanoTime()-startTime;
             frameCount++;
             if(frameCount == FPS) {
@@ -159,9 +146,7 @@ public class GamePanel extends SurfaceView implements Runnable {
                 totalTime = 0;
                 Log.e("FPS", String.valueOf(avgFPS));
 
-            }
-            */
-
+            } */
     }
 
     /**
@@ -172,7 +157,7 @@ public class GamePanel extends SurfaceView implements Runnable {
     public void createPlayer(Canvas c) {
         Bitmap ghostImage = BitmapFactory.decodeResource(getResources(), R
                 .drawable.ghost64);
-        player = new Player(ghostImage, c);
+        player = new Player(ghostImage, c, getContext());
 
     }
 
@@ -185,7 +170,7 @@ public class GamePanel extends SurfaceView implements Runnable {
         if(fires.size() < maxNumOfFires) {
             Bitmap fireImage = BitmapFactory.decodeResource(getResources(), R
                     .drawable.fire64);
-            fires.add(new Fire(fireImage, c.getWidth(), c));
+            fires.add(new Fire(fireImage, c));
         }
 
     }
@@ -200,8 +185,8 @@ public class GamePanel extends SurfaceView implements Runnable {
                 .drawable.square64);
         floors.clear();
 
-        for(int i = 0; i < numOfFloors; i++) {
-            floors.add(new Floor(squareImage, c.getWidth(), c));
+        for(int i = 0; i < startNumOfFloors; i++) {
+            floors.add(new Floor(squareImage, c));
         }
         generateFloorPattern(c);
 
@@ -269,6 +254,7 @@ public class GamePanel extends SurfaceView implements Runnable {
      */
     public void update(Canvas c, boolean floorActive, boolean
             decoyFloorActive) {
+
         drawBackground(c);
         player.update(c);
         player.draw(c);
@@ -296,6 +282,8 @@ public class GamePanel extends SurfaceView implements Runnable {
             }
         }
 
+        drawScore(c);
+
     }
 
     /**
@@ -318,15 +306,8 @@ public class GamePanel extends SurfaceView implements Runnable {
      */
     public void endGame() {
         Intent intent = new Intent(getContext(), GameOverActivity.class);
-        intent.putExtra("Score", player.getScore());
-        ((GameActivity)getContext()).startActivity(intent);
-        /*
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
+        intent.putExtra("score", String.valueOf(player.getScore()));
+        getContext().startActivity(intent);
     }
 
     /**
@@ -341,7 +322,6 @@ public class GamePanel extends SurfaceView implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
         thread = null;
     }
