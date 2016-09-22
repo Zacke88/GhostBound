@@ -15,11 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:src="@drawable/ghosticon128"
-        android:tint="#ffffff"
-        android:layout_above="@+id/newGame"
+        android:src="@drawable/ghost64"
+        android:layout_below="@+id/mainText"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginTop="40dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,4 +60,16 @@
         android:layout_below="@+id/highScore"
         android:layout_centerHorizontal="true"
         android:onClick="credits"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ghost Bound"
+        android:id="@+id/mainText"
+        android:textColor="@color/colorWhite"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

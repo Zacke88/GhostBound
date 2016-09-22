@@ -66,6 +66,7 @@
         android:textColor="@color/colorAccent"
         android:layout_below="@+id/scoreInteger"
         android:layout_alignEnd="@+id/gameOverText"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:onClick="saveScore"/>
 
 </RelativeLayout>
