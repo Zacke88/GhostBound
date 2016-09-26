@@ -25,7 +25,7 @@ import java.util.Random;
  *
  * Created by Zacke on 2016-09-15.
  */
-public class GamePanel extends SurfaceView implements Runnable {
+public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread = null;
     private SurfaceHolder holder;
@@ -54,14 +54,14 @@ public class GamePanel extends SurfaceView implements Runnable {
     private List<Fire> fires = new ArrayList<>();
     private List<Floor> floors = new ArrayList<>();
 
-    public GamePanel(Context context) {
+    public GameView(Context context) {
         super(context);
         holder = getHolder();
     }
 
     /**
      * The run method which is the game loop that keeps running while the
-     * player is active. Also handles the canvas to draw objects onto it
+     * game is active. Also handles the canvas to draw objects onto it
      */
     @Override
     public void run() {

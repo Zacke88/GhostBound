@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view which was clicked to call this class.
      */
     public void newGame(View view) {
-        startActivity(new Intent(MainActivity.this, GameActivity.class));
+        startActivity(new Intent(MainActivity.this, GameThreadActivity.class));
         finish();
     }
 

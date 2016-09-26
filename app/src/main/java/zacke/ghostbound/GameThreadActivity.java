@@ -8,17 +8,17 @@ import android.os.Bundle;
  * Activity class which is created when a new game starts. It sets the
  * GamePanel class as it's content view and also handles the in-game music.
  */
-public class GameActivity extends AppCompatActivity {
+public class GameThreadActivity extends AppCompatActivity {
 
-    GamePanel game;
+    GameView game;
     MediaPlayer gameMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        game = new GamePanel(this);
+        game = new GameView(this);
         setContentView(game);
-        gameMusic = MediaPlayer.create(GameActivity.this, R.raw.gamemusic);
+        gameMusic = MediaPlayer.create(GameThreadActivity.this, R.raw.gamemusic);
     }
 
     @Override
@@ -33,6 +33,8 @@ public class GameActivity extends AppCompatActivity {
         game.resume();
         gameMusic.start();
     }
+
+
 
 
 
