@@ -12,8 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Activity which is run after a new game has ended. It shows the player
- * score and also saves the score in a database if the player wants to.
+ * Activity which is run after a game has ended. It shows the player
+ * score and also saves the score in a database if the player wants to by
+ * clicking the "Save Score" text.
  *
  * @author Zacke
  * @version 2016-09-28
@@ -29,7 +30,7 @@ public class GameOverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
-
+        //Gets the player score from the previous activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             score = Integer.parseInt(extras.getString("score"));
@@ -40,35 +41,33 @@ public class GameOverActivity extends AppCompatActivity {
 
     /**
      * Method tied to the save score text and saves the player score and
-     * player name to a SQL database
+     * player name to a SQL database. It creates a new alert dialog which it
+     * shows to the user where a user can enter the username to tie to the
+     * player score.
+     *
+     * @param view The view which was clicked to call this class.
      */
     public void saveScore(View view) {
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(GameOverActivity
-                .this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder
+                (GameOverActivity.this);
         alertDialog.setTitle("High Score");
         alertDialog.setMessage("Enter Name");
-
         final EditText input = new EditText(GameOverActivity.this);
+
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
-        alertDialog.setView(input);
 
-        // set dialog message
+        alertDialog.setView(input);
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // get user input and set it to result
-                        // edit text
+                        // get user input and set it to name
                         name = String.valueOf(input.getText());
-
                         //Insert to database
                         insertToDB();
-
-
                     }
                 });
         alertDialog.setNegativeButton("Cancel",
@@ -77,11 +76,12 @@ public class GameOverActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-        // show it
         alertDialog.show();
-
     }
 
+    /**
+     * Inserts data into the database. Shows a toast if it succeeded or failed.
+     */
     public void insertToDB() {
         DB = new HighScoreDB(this);
         boolean inserted = DB.insertData(name, score);
@@ -94,7 +94,6 @@ public class GameOverActivity extends AppCompatActivity {
                     " score", Toast
                     .LENGTH_LONG).show();
         }
-
     }
 
     /**

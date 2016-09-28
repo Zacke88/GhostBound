@@ -3,7 +3,6 @@ package zacke.ghostbound;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 
 /**
  * Class which represents the player object. Creates a scaled bitmap of the
@@ -18,7 +17,6 @@ public class Player extends GameObject {
     private int canvasWidth;
     private int canvasHeight;
     private AccelerometerSensor accSensor;
-
 
     public Player(int canvasWidth, int canvasHeight, Context context) {
         accSensor = new AccelerometerSensor(context);
@@ -35,39 +33,38 @@ public class Player extends GameObject {
     }
 
     /**
-     * Updates the player position which is updated by the accelerometer sensor
+     * Updates the player position which is updated by the accelerometer sensor.
      */
     public void update() {
         x += accSensor.getdX();
-        if(x > (canvasWidth - imageSize)) {
+        if (x > (canvasWidth - imageSize)) {
             x = (canvasWidth - imageSize);
         }
-        if(x < 0) {
+        if (x < 0) {
             x = 0;
         }
         y += accSensor.getdY();
-        if(y > (canvasHeight - imageSize)) {
+        if (y > (canvasHeight - imageSize)) {
             y = (canvasHeight - imageSize);
         }
-        if(y < 0) {
+        if (y < 0) {
             y = 0;
         }
-
     }
 
     /**
-     * Getter for the score
+     * Getter for the score.
      *
-     * @return Player score
+     * @return Player score.
      */
     public int getScore() {
         return score;
     }
 
     /**
-     * Setter for the score
+     * Setter for the score.
      *
-     * @param score Player score
+     * @param score Player score.
      */
     public void setScore(int score) {
         this.score = score;

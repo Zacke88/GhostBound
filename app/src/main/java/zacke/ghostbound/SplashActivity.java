@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        //Animates the image logo and title text.
+        //Animates the image logo and text views.
         Animation animMoveUp = AnimationUtils.loadAnimation(this, R.anim
                 .move_up);
         Animation animFadeIn = AnimationUtils.loadAnimation(this, R.anim

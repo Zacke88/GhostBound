@@ -46,14 +46,4 @@
         android:textSize="20sp"
         android:textColor="@color/colorWhite"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Clear DB"
-        android:id="@+id/deleteScores"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/colorWhite"
-        android:onClick="deleteScores"/>
 </RelativeLayout>
