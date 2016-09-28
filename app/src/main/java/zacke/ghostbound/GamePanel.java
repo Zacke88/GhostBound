@@ -258,18 +258,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * Terminates the game thread and starts the game over activity
+     * Starts the game over activity and sets the thread running to false.
      */
     public void endGame() {
         gameThread.setRunning(false);
-        while (true) {
-            try {
-                gameThread.join();
-                break;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
         Intent intent = new Intent(getContext(), GameOverActivity.class);
         intent.putExtra("score", String.valueOf(player.getScore()));
         getContext().startActivity(intent);
