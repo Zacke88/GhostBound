@@ -21,7 +21,9 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         GamePanel view = new GamePanel(this);
         setContentView(view);
-        gameMusic = MediaPlayer.create(this, R.raw.gamemusic);
+        gameMusic = MediaPlayer.create(this, R.raw.music);
+        gameMusic.setVolume(0.8f, 0.8f);
+        gameMusic.setLooping(true);
         gameMusic.start();
     }
 
