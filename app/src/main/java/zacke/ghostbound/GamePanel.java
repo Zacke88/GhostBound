@@ -250,11 +250,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
      * @return true if objects intersect else false.
      */
     public boolean checkCollision(GameObject object, GameObject player) {
-        if (Rect.intersects(object.getRectangle(), player.getRectangle())) {
-            return true;
-        } else {
-            return false;
-        }
+        return Rect.intersects(object.getRectangle(), player.getRectangle());
     }
 
     /**

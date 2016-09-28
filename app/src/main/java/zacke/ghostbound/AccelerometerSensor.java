@@ -18,7 +18,6 @@ public class AccelerometerSensor {
 
     private int dX = 0;
     private int dY = 0;
-    private int multiplier = 10;
 
     public AccelerometerSensor(Context context) {
         SensorManager manager = (SensorManager)
@@ -35,6 +34,7 @@ public class AccelerometerSensor {
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent event) {
+            int multiplier = 10;
             float axisX = event.values[0];
             float axisY = event.values[1];
             dX = (0 - (int) (axisX * multiplier));

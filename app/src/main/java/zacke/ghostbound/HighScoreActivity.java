@@ -23,7 +23,6 @@ public class HighScoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
-
         scoreView = (TextView) findViewById(R.id.dataText);
         showData();
     }
@@ -37,19 +36,18 @@ public class HighScoreActivity extends AppCompatActivity {
 
         // If no data is stored in database
         if(data.getCount() == 0) {
-            scoreView.setText("No data to show");
+            scoreView.setText(getResources().getString(R.string.no_data));
             return;
         }
 
-        StringBuffer dataString = new StringBuffer();
+        StringBuilder dataString = new StringBuilder();
         int i = 0;
         while(data.moveToNext()) {
             if(i >= 5) {
                 break;
             }
-            dataString.append(data.getInt(2) + "  " +
-                    String.valueOf(data.getString(1)) +
-                    "\n");
+            dataString.append(data.getInt(2)).append("  ").append(String
+                    .valueOf(data.getString(1))).append("\n");
             i++;
         }
         scoreView.setText(dataString.toString());

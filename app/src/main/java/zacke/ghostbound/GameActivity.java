@@ -19,8 +19,8 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GamePanel view = new GamePanel(this);
-        setContentView(view);
+        GamePanel gameView = new GamePanel(this);
+        setContentView(gameView);
         gameMusic = MediaPlayer.create(this, R.raw.ghostmusic);
         gameMusic.setVolume(0.8f, 0.8f);
         gameMusic.setLooping(true);

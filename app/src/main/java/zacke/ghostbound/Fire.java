@@ -63,8 +63,7 @@ public class Fire extends GameObject {
     public int generateSpeed() {
         int baseSpeed = 4;
         int maxSpeed = 20;
-        int speed = r.nextInt(maxSpeed - baseSpeed + 1) + baseSpeed;
-        return speed;
+        return r.nextInt(maxSpeed - baseSpeed + 1) + baseSpeed;
     }
 
     /**
