@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 /**
  * This class is created when the game shows the current highscore list.
+ *
+ * @author Zacke
+ * @version 2016-09-28
  */
 public class HighScoreActivity extends AppCompatActivity {
 
@@ -39,8 +42,8 @@ public class HighScoreActivity extends AppCompatActivity {
             if(i >= 5) {
                 break;
             }
-            dataString.append(data.getString(1) + "   " +
-                    String.valueOf(data.getInt(2)) +
+            dataString.append(data.getInt(2) + "  " +
+                    String.valueOf(data.getString(1)) +
                     "\n");
             i++;
         }

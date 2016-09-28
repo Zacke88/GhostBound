@@ -9,27 +9,28 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="zacke.ghostbound.SplashActivity"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDarker">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Ghost Bound"
+        android:text="@string/app_name"
         android:id="@+id/title"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:textColor="@color/colorWhite"
         android:textSize="40sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/splashLogo"
-        android:layout_centerVertical="true"
+        android:src="@drawable/ghost64"
+        android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ghostlogo"/>
+        android:layout_marginTop="60dp"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyle"
@@ -40,7 +41,18 @@
         android:indeterminateTintMode="src_atop"
         android:indeterminateTint="@color/colorAccent"
         tools:targetApi="lollipop"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/splashLogo"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/made_by"
+        android:id="@+id/zakrissonText"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"/>
 </RelativeLayout>

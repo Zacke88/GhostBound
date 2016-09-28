@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,6 +14,9 @@ import android.widget.Toast;
 /**
  * Activity which is run after a new game has ended. It shows the player
  * score and also saves the score in a database if the player wants to.
+ *
+ * @author Zacke
+ * @version 2016-09-28
  */
 public class GameOverActivity extends AppCompatActivity {
 
@@ -59,7 +60,7 @@ public class GameOverActivity extends AppCompatActivity {
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                    public void onClick(DialogInterface dialog, int id) {
                         // get user input and set it to result
                         // edit text
                         name = String.valueOf(input.getText());
@@ -68,13 +69,11 @@ public class GameOverActivity extends AppCompatActivity {
                         insertToDB();
 
 
-
-
                     }
                 });
         alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                    public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 });
@@ -86,11 +85,11 @@ public class GameOverActivity extends AppCompatActivity {
     public void insertToDB() {
         DB = new HighScoreDB(this);
         boolean inserted = DB.insertData(name, score);
-        if(inserted) {
+        if (inserted) {
             Toast.makeText(GameOverActivity.this, "High score saved", Toast
                     .LENGTH_LONG).show();
-        }
-        else {
+            findViewById(R.id.saveScoreText).setVisibility(View.GONE);
+        } else {
             Toast.makeText(GameOverActivity.this, "Error: Could not save high" +
                     " score", Toast
                     .LENGTH_LONG).show();

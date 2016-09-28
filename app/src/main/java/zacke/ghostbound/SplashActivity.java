@@ -15,7 +15,7 @@ import android.widget.TextView;
  * main activity.
  *
  * @author Zacke
- * @version 2016-09-14
+ * @version 2016-09-28
  */
 public class SplashActivity extends AppCompatActivity {
 
@@ -29,10 +29,14 @@ public class SplashActivity extends AppCompatActivity {
                 .move_up);
         Animation animFadeIn = AnimationUtils.loadAnimation(this, R.anim
                 .fade_in);
+        Animation animFadeInSlow = AnimationUtils.loadAnimation(this, R.anim
+                .fade_in_slow);
         ImageView imageLogo = (ImageView) findViewById(R.id.splashLogo);
         TextView textTitle = (TextView) findViewById(R.id.title);
+        TextView textZakrisson = (TextView) findViewById(R.id.zakrissonText);
         imageLogo.setAnimation(animMoveUp);
         textTitle.setAnimation(animFadeIn);
+        textZakrisson.setAnimation(animFadeInSlow);
 
         // Handler which calls the main activity after a set duration.
         Handler handler = new Handler();

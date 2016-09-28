@@ -15,18 +15,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Game Over"
+        android:text="@string/game_over"
         android:id="@+id/gameOverText"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textColor="@color/colorWhite"
-        android:textSize="30sp"/>
+        android:textStyle="bold"
+        android:textSize="40sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Main Menu"
+        android:text="@string/menu"
         android:id="@+id/mainMenuText"
         android:textColor="@color/colorAccent"
         android:layout_alignParentBottom="true"
@@ -38,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Score"
+        android:text="@string/score"
         android:id="@+id/scoreTextView"
         android:textColor="@color/colorWhite"
         android:layout_below="@+id/gameOverText"
@@ -53,7 +54,8 @@
         android:id="@+id/scoreInteger"
         android:textColor="@color/colorWhite"
         android:layout_below="@+id/scoreTextView"
-        android:textSize="50sp"
+        android:textSize="40sp"
+        android:textStyle="bold"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -64,9 +66,9 @@
         android:id="@+id/saveScoreText"
         android:textSize="30sp"
         android:textColor="@color/colorAccent"
+        android:layout_marginTop="54dp"
+        android:onClick="saveScore"
         android:layout_below="@+id/scoreInteger"
-        android:layout_alignEnd="@+id/gameOverText"
-        android:layout_marginTop="50dp"
-        android:onClick="saveScore"/>
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

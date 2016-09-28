@@ -4,11 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 /**
- * Abstract class for any game object. It is used to store data succh as x
+ * Abstract class for any game object. It is used to store data such as x
  * and y position for the object, also holds the bitmap image and the size of
- * the image.
+ * the image. Has method to return the image as a rectangle.
  *
- * Created by Zacke on 2016-09-15.
+ * @author Zacke
+ * @version 2016-09-28
  */
 public abstract class GameObject {
     protected int x;
@@ -32,7 +33,22 @@ public abstract class GameObject {
         this.y = y;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * @return The object as a rectangle with adjusted collision size to make
+     * collision better reflect bitmaps.
+     */
     public Rect getRectangle() {
-        return new Rect(x, y, x+imageSize, y+imageSize);
+        int adjustCollision = (int) (imageSize / 20);
+        return new Rect((x + adjustCollision), (y + adjustCollision), ((x +
+                imageSize) - adjustCollision), ((y +
+                imageSize) - adjustCollision));
     }
 }

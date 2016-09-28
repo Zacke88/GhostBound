@@ -1,30 +1,24 @@
 package zacke.ghostbound;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 /**
- * Created by Zacke on 2016-09-17.
+ * Class which represents the floor object. Creates a scaled bitmap of the
+ * image to make it adjust to different screen sizes.
+ *
+ * @author Zacke
+ * @version 2016-09-28
  */
 public class Floor extends GameObject {
 
-    private int gameWidth;
-
-    public Floor(Bitmap image, Canvas c) {
-        gameWidth = c.getWidth();
-        imageSize = (c.getWidth() / 10);
-        super.image = Bitmap.createScaledBitmap(
-                image, imageSize, imageSize, false);
-    }
-
-    public void draw(Canvas canvas) {
-        canvas.drawBitmap(image, x, y, null);
-    }
-
-    public void drawDecoy(Canvas canvas) {
-        Paint alphaPaint = new Paint();
-        alphaPaint.setAlpha(35);
-        canvas.drawBitmap(image, x, y, alphaPaint);
+    public Floor(int canvasWidth, Context context) {
+        imageSize = (canvasWidth / 10);
+        Bitmap bitmapImage = BitmapFactory.decodeResource
+                (context.getResources(), R.drawable.square64);
+        super.image = Bitmap.createScaledBitmap(bitmapImage, imageSize,
+                imageSize, false);
     }
 }

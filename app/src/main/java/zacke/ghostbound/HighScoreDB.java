@@ -11,7 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
  * chooses to save it's high score. It saves the player name and player score
  * which is inserted into a SQLite databse.
  *
- * Created by Zacke on 2016-09-22.
+ * @author Zacke
+ * @version 2016-09-28
  */
 public class HighScoreDB extends SQLiteOpenHelper {
     public static final String DB_NAME = "HIGHSCORE.db";
@@ -28,8 +29,10 @@ public class HighScoreDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY " +
-                "AUTOINCREMENT, NAME TEXT, SCORE INTEGER)");
+        db.execSQL("create table " + TABLE_NAME + " (" + COL_ID + " INTEGER " +
+                "PRIMARY KEY " +
+                "AUTOINCREMENT, " + COL_NAME + " TEXT, " + COL_SCORE + " " +
+                "INTEGER)");
 
     }
 

@@ -11,7 +11,7 @@ import android.view.View;
  * high scores within the game.
  *
  * @author Zacke
- * @version 2016-09-15
+ * @version 2016-09-28
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view which was clicked to call this class.
      */
     public void newGame(View view) {
-        startActivity(new Intent(MainActivity.this, GameThreadActivity.class));
+        startActivity(new Intent(MainActivity.this, GameActivity.class));
         finish();
     }
 
@@ -41,17 +41,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public void highScore(View view) {
         startActivity(new Intent(MainActivity.this, HighScoreActivity.class));
-        finish();
-    }
-
-    /**
-     * Class tied to the credits text and starts the credits activity when the
-     * player press this text field.
-     *
-     * @param view The view which was clicked to call this class.
-     */
-    public void credits(View view) {
-        startActivity(new Intent(MainActivity.this, CreditsActivity.class));
         finish();
     }
 }

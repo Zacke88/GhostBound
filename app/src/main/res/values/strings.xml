@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Ghost Bound</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="made_by">Zakrisson Entertainment</string>
+    <string name="new_game">New Game</string>
+    <string name="high_score">High Score</string>
+    <string name="game_over">Game Over</string>
+    <string name="score">Score</string>
+    <string name="save_score">Save Score</string>
+    <string name="menu">Main Menu</string>
+    <string name="back">Back</string>
+    <string name="data">Data</string>
 </resources>
